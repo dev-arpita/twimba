@@ -7,13 +7,21 @@ tweetBtn.addEventListener('click', function(){
 })
 
 function getFeedHtml(){
-
+    let feedHtml = ``
 /*
 Challenge:
-1. Replace the for of with a forEach.
+1. Inside each span that has a class of "tweet-detail",
+   add an <i> tag.
+2. Give each <i> tag the classes it needs to render the
+   correct icons next to the numbers.
+   The classes you will need are:
+    fa-regular,
+    fa-solid,
+    fa-comment-dots,
+    fa-heart,
+    fa-retweet
 */
 
-    let feedHtml = ``
     tweetsData.forEach(function(tweet){
         feedHtml += `
 <div class="tweet">
@@ -24,12 +32,15 @@ Challenge:
             <p class="tweet-text">${tweet.tweetText}</p>
             <div class="tweet-details">
                 <span class="tweet-detail">
+                    <i class="fa-regular fa-comment-dots"></i>
                     ${tweet.replies.length}
                 </span>
                 <span class="tweet-detail">
+                    <i class="fa-solid fa-heart"></i>
                     ${tweet.likes}
                 </span>
                 <span class="tweet-detail">
+                    <i class="fa-solid fa-retweet"></i>
                     ${tweet.retweets}
                 </span>
             </div>
@@ -41,4 +52,9 @@ Challenge:
    return feedHtml
 }
 
-console.log(getFeedHtml())
+function render(){
+    document.getElementById('feed').innerHTML = getFeedHtml()
+}
+
+render()
+
