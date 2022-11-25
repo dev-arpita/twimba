@@ -1,15 +1,17 @@
 import { tweetsData } from './data.js'
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
-/*
-Challenge:
-3. We could improve index.js by moving one line
-   of code to a better position. Find it and move it!
-*/
+ const feedFromLocalStorage = JSON.parse( localStorage.getItem("tweetsData") )
+ console.log(feedFromLocalStorage)
+ function setItemInLocalStorage() {
+    localStorage.setItem("tweetsData", JSON.stringify(tweetsData))
+ }
+
 
 document.addEventListener('click', function(e){
     if(e.target.dataset.like){
        handleLikeClick(e.target.dataset.like)
+
     }
     else if(e.target.dataset.retweet){
         handleRetweetClick(e.target.dataset.retweet)
@@ -21,6 +23,8 @@ document.addEventListener('click', function(e){
         handleTweetBtnClick()
     }
 })
+
+
 
 function handleLikeClick(tweetId){
     const targetTweetObj = tweetsData.filter(function(tweet){
@@ -34,6 +38,7 @@ function handleLikeClick(tweetId){
         targetTweetObj.likes++
     }
     targetTweetObj.isLiked = !targetTweetObj.isLiked
+    setItemInLocalStorage()
     render()
 }
 
@@ -49,21 +54,17 @@ function handleRetweetClick(tweetId){
         targetTweetObj.retweets++
     }
     targetTweetObj.isRetweeted = !targetTweetObj.isRetweeted
+    setItemInLocalStorage()
     render()
 }
 
 function handleReplyClick(replyId){
     document.getElementById(`replies-${replyId}`).classList.toggle('hidden')
-}
+}//check once for replies
 
 function handleTweetBtnClick(){
     const tweetInput = document.getElementById('tweet-input')
 
-/*
-Challenge:
-1. No empty tweets!
-2. Clear the textarea after tweeting!
-*/
     if(tweetInput.value){
         tweetsData.unshift({
             handle: `@Scrimba`,
@@ -76,6 +77,7 @@ Challenge:
             isRetweeted: false,
             uuid: uuidv4()
         })
+    setItemInLocalStorage()
     render()
     tweetInput.value = ''
     }
@@ -97,6 +99,7 @@ function getFeedHtml(){
 
         if (tweet.isRetweeted){
             retweetIconClass = 'retweeted'
+
         }
 
         let repliesHtml = ''
@@ -152,6 +155,7 @@ function getFeedHtml(){
     </div>
 </div>
 `
+
    })
    return feedHtml
 }
@@ -162,3 +166,4 @@ function render(){
 
 render()
 
+console.log()
